@@ -4,7 +4,6 @@ import path from 'path'
 import { minimatch } from 'minimatch'
 import { globbySync } from 'globby'
 
-import type { InputOptions } from 'rollup'
 import type {
     Manifest,
     ManifestChunk,
@@ -30,20 +29,7 @@ export interface PluginConfig {
 }
 
 export default function viteNodeCGPlugin(pluginConfig: PluginConfig): Plugin {
-    // Read the bundle's package.json to get the bundle name
-    const packageJsonPath = path.join(process.cwd(), 'package.json')
-    let bundleName: string
-    try {
-        const packageJson = JSON.parse(
-            fs.readFileSync(packageJsonPath, 'utf-8'),
-        )
-        bundleName = packageJson.name
-    } catch (error) {
-        console.error(
-            `vite-plugin-nodecg: Could not read package.json at ${packageJsonPath}. Please ensure the file exists and is valid JSON.`,
-        )
-        process.exit(1)
-    }
+    const bundleName = path.basename(process.cwd())
 
     const inputConfig = pluginConfig?.inputs ?? {
         'graphics/*.{js,ts}': './src/graphics/template.html',
@@ -93,7 +79,7 @@ export default function viteNodeCGPlugin(pluginConfig: PluginConfig): Plugin {
     let dSrvHost: string
     let assetManifest: Manifest
 
-    let resolvedInputOptions: InputOptions
+    let resolvedInputs: string[] | undefined
 
     // take the template html and inject script and css assets into <head>
     function injectAssetsTags(html: string, entry: string) {
@@ -161,25 +147,22 @@ export default function viteNodeCGPlugin(pluginConfig: PluginConfig): Plugin {
 
     // for each input (graphics & dashboard panels) create an html doc and emit to disk
     function generateHTMLFiles() {
-        let resolvedInputs: string[]
-
-        // populate inputs, taking into account "input" can come in 3 forms
-        if (typeof resolvedInputOptions.input === 'string') {
-            resolvedInputs = [resolvedInputOptions.input]
-        } else if (Array.isArray(resolvedInputOptions.input)) {
-            resolvedInputs = resolvedInputOptions.input
-        } else {
-            resolvedInputs = Object.values(resolvedInputOptions.input)
-        }
-
         const htmlDocs = {} as { [key: string]: string }
+        const inputs = resolvedInputs ?? []
 
         // generate string html for each input
-        resolvedInputs.forEach((inputPath) => {
+        inputs.forEach((inputPath) => {
             // find first template that has a match path that this input satisfies
             const matchPath = Object.keys(inputConfig).find((matchPath) => {
                 return minimatch(inputPath, path.posix.join(srcDir, matchPath))
             })
+
+            if (!matchPath) {
+                console.error(
+                    `vite-plugin-nodecg: No template found to match input "${inputPath}". This probably means the input file was manually specified in the vite rollup config, and the graphic/dashboard will not be built.`,
+                )
+                return
+            }
 
             const templatePath = inputConfig[matchPath]
             const template = templates[templatePath]
@@ -251,13 +234,21 @@ export default function viteNodeCGPlugin(pluginConfig: PluginConfig): Plugin {
             config = resolvedConfig
         },
 
-        buildStart(options: InputOptions) {
+        buildStart(options) {
             // capture inputOptions for use in generateHtmlFiles in both dev & prod
-            resolvedInputOptions = options
+            const input = options.input
+            resolvedInputs =
+                typeof input === 'string'
+                    ? [input]
+                    : Array.isArray(input)
+                      ? input
+                      : input
+                        ? Object.values(input)
+                        : []
         },
 
         writeBundle() {
-            if (!resolvedInputOptions?.input || config.mode !== 'production')
+            if (!resolvedInputs?.length || config.mode !== 'production')
                 return
 
             try {
@@ -286,7 +277,7 @@ export default function viteNodeCGPlugin(pluginConfig: PluginConfig): Plugin {
         },
 
         configureServer(server) {
-            server.httpServer.on('listening', () => {
+            server.httpServer?.on('listening', () => {
                 dSrvProtocol = server.config.server.https ? 'https' : 'http'
                 dSrvHost = `${server.config.server.host ?? 'localhost'}:${
                     server.config.server.port ?? '5173'
