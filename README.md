@@ -26,12 +26,12 @@ By default `vite-plugin-nodecg` will load all .js and .ts files in `./src/graphi
 ### Minimal `vite.config.mjs`
 
 ```javascript
-import { defineConfig } from 'vite'
-import NodeCGPlugin from 'vite-plugin-nodecg'
+import { defineConfig } from "vite";
+import NodeCGPlugin from "vite-plugin-nodecg";
 
 export default defineConfig({
-    plugins: [NodeCGPlugin()],
-})
+	plugins: [NodeCGPlugin()],
+});
 ```
 
 ### Why `.mjs`?
@@ -61,22 +61,22 @@ If you want `vite-plugin-nodecg` to look in a different directory to `./src` for
 The following config is for a bundle with a separate `templates` directory, which has a `special_graphic` with a `special_template`, and which nests each input in its own sub-directory (e.g. `src/graphics/timer/main.js`).
 
 ```javascript
-import { defineConfig } from 'vite'
-import NodeCGPlugin from 'vite-plugin-nodecg'
+import { defineConfig } from "vite";
+import NodeCGPlugin from "vite-plugin-nodecg";
 
 export default defineConfig(() => {
-    return {
-        plugins: [
-            NodeCGPlugin({
-                inputs: {
-                    'graphics/special_graphic/main.js': './templates/special_template.html',
-                    'graphics/*/main.js': './templates/graphics.html',
-                    'dashboard/*/main.js': './templates/dashboard.html',
-                },
-            }),
-        ],
-    }
-})
+	return {
+		plugins: [
+			NodeCGPlugin({
+				inputs: {
+					"graphics/special_graphic/main.js": "./templates/special_template.html",
+					"graphics/*/main.js": "./templates/graphics.html",
+					"dashboard/*/main.js": "./templates/dashboard.html",
+				},
+			}),
+		],
+	};
+});
 ```
 
 ### Default plugin options

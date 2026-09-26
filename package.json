@@ -1,46 +1,52 @@
 {
-    "name": "vite-plugin-nodecg",
-    "version": "2.1.0",
-    "description": "Vite plugin to enable its use with NodeCG",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "keywords": [
-        "vite-plugin"
-    ],
-    "engines": {
-        "node": ">=16"
-    },
-    "type": "module",
-    "scripts": {
-        "build": "tsc",
-        "dev": "tsc --watch",
-        "fmt": "oxfmt",
-        "fmt:check": "oxfmt --check"
-    },
-    "author": {
-        "name": "Daniel Shields",
-        "email": "hello@danielshields.uk",
-        "url": "https://danielshields.uk"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/nodecg/vite-plugin-nodecg.git"
-    },
-    "license": "ISC",
-    "dependencies": {
-        "globby": "^16.2.4",
-        "minimatch": "^10.2.6"
-    },
-    "devDependencies": {
-        "@types/node": "^26.6.3",
-        "oxfmt": "^0.70.0",
-        "prettier": "^3.9.9",
-        "rollup": "^4.63.5",
-        "typescript": "^7.0.2",
-        "vite": "^8.3.1"
-    },
-    "peerDependencies": {
-        "vite": "^8.0.0"
-    },
-    "packageManager": "pnpm@12.6.0"
+	"name": "@ewanlyon/vite-plugin-nodecg",
+	"version": "2.1.0",
+	"description": "Vite plugin to enable its use with NodeCG",
+	"keywords": [
+		"vite-plugin"
+	],
+	"license": "ISC",
+	"author": {
+		"name": "Daniel Shields",
+		"email": "hello@danielshields.uk",
+		"url": "https://danielshields.uk"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/nodecg/vite-plugin-nodecg.git"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"CHANGELOG.md",
+		"LICENSE"
+	],
+	"type": "module",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"fmt": "oxfmt",
+		"fmt:check": "oxfmt --check"
+	},
+	"dependencies": {
+		"globby": "^16.2.4",
+		"minimatch": "^10.2.6"
+	},
+	"devDependencies": {
+		"@types/node": "^26.6.3",
+		"oxfmt": "^0.70.0",
+		"prettier": "^3.9.9",
+		"rollup": "^4.63.5",
+		"typescript": "^7.0.2",
+		"vite": "^8.3.1"
+	},
+	"peerDependencies": {
+		"vite": "^8.0.0"
+	},
+	"engines": {
+		"node": ">=16"
+	},
+	"packageManager": "pnpm@12.6.0"
 }

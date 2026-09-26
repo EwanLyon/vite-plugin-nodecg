@@ -1,5 +1,5 @@
-import './index.css'
+import "./index.css";
 
 export default function () {
-    console.log('shared module loaded')
+	console.log("shared module loaded");
 }

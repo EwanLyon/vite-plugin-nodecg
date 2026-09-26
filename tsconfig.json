@@ -1,13 +1,13 @@
 {
-    "files": ["index.ts"],
-    "compilerOptions": {
-        "allowSyntheticDefaultImports": true,
-        "lib": ["ES2019", "Webworker"],
-        "module": "ES2020",
-        "moduleResolution": "bundler",
-        "target": "ES2019",
-        "outDir": "./dist",
-        "declaration": true,
-        "esModuleInterop": true
-    }
+	"files": ["index.ts"],
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"lib": ["ES2019", "Webworker"],
+		"module": "ES2020",
+		"moduleResolution": "bundler",
+		"target": "ES2019",
+		"outDir": "./dist",
+		"declaration": true,
+		"esModuleInterop": true
+	}
 }
