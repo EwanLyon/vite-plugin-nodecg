@@ -14,7 +14,8 @@
     "scripts": {
         "build": "tsc",
         "dev": "tsc --watch",
-        "check-format": "prettier --check ."
+        "fmt": "oxfmt",
+        "fmt:check": "oxfmt --check"
     },
     "author": {
         "name": "Daniel Shields",
@@ -32,6 +33,7 @@
     },
     "devDependencies": {
         "@types/node": "^26.6.3",
+        "oxfmt": "^0.70.0",
         "prettier": "^3.9.9",
         "rollup": "^4.63.5",
         "typescript": "^7.0.2",
